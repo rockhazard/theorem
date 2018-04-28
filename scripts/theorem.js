@@ -14,7 +14,8 @@ Theorem.Lib = (function() {
     // form inputs return strings, so check user entered only positive numbers
     function checkNum() {
         for (let i = arguments.length - 1; i >= 0; i--) {
-            if (isNaN(arguments[i] - 1) || arguments < 0) {
+            //  reject negative numbers: || arguments[i] < 0
+            if (isNaN(arguments[i]) || arguments[i] < 0) {
                 return false;
             }
             continue;
@@ -26,9 +27,14 @@ Theorem.Lib = (function() {
     // fix js rounding errors
     // source: http://www.jacklmoore.com/notes/rounding-in-javascript/
     function _round(value, decimals) {
-        if (checkNum(value, decimals)) {
-            decimals = Math.abs(decimals);
-            return Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
+        try {
+            if (checkNum(value, decimals)) {
+                decimals = Math.abs(decimals);
+                return Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
+            } else throw new Error("Invalid input");
+        }
+        catch(error) {
+            console.error(error);
         }
     }
 

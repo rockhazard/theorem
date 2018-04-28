@@ -15,8 +15,8 @@ var theorem = Theorem.Lib;
 QUnit.test("Test _round", function(assert) {
     assert.deepEqual(theorem._round(1.967, 2), 1.97, "basic");
     assert.deepEqual(theorem._round(Math.PI, 2), 3.14, "PI rounded to tenths");
-    assert.deepEqual(theorem._round(-1.967, 2), -1.97, "negative parameter: number");
-    assert.deepEqual(theorem._round(-1.967, -2), -1.97, "negative parameter: decimal");
+    assert.throws(theorem._round(-1.967, 2), Error, "negative parameter 1");
+    assert.throws(theorem._round(-1.967, -2), Error, "negative parameter 2");
     assert.deepEqual(theorem._round(0, 2), 0.00, "first argument is 0");
     assert.deepEqual(theorem._round(1, 0), 1, "0 decimal");
     assert.deepEqual(theorem._round(0, 0), 0, "0 number and decimal");
@@ -25,7 +25,7 @@ QUnit.test("Test _round", function(assert) {
 QUnit.test("Test range", function(assert) {
     assert.deepEqual(theorem.range(0,5), [0,1,2,3,4,5], "Test 6 element range");
     assert.deepEqual(theorem.range(0,0), [0], "0 value parameters");
-    assert.deepEqual(theorem.range(-5,0), [-5, -4, -3, -2, -1, 0], "negative range");
+    assert.throws(theorem.range(-5,0), Error, "Error negative input");
     assert.throws(theorem.range(0,"y"), Error, "Error last arg is NaN.");
     assert.throws(theorem.range(0,5, 3), Error, "Error Too many arguments.");
 });
@@ -37,9 +37,14 @@ QUnit.test("Test baseConvert", function(assert) {
 });
 
 QUnit.test("Test checkNum", function(assert) {
+    let numTest = function(a, b, c, d) {
+        
+        return theorem.checkNum(...arguments);
+    };
     assert.deepEqual(theorem.checkNum("1", "2", "3", "4", "5.5"), true, "true");
     assert.throws(theorem.checkNum("1", "2", "3", "4", "xyz"), TypeError, 
         "Threw TypeError");
+    assert.equal(numTest("1", "2", "3", "4"), true, "Nested args list resolve.");
 });
 
 QUnit.test("Test fixPrecision", function(assert) {
