@@ -1,7 +1,7 @@
 /* jshint esversion: 6 */
 // no error on global 'use strict'
 /*jslint node: true */
-// theorem is a simple library of basic geometry tools
+// theorem is a simple library of basic geometry formulas
 'use strict';
 let Theorem = {};
 
@@ -14,7 +14,6 @@ Theorem.Lib = (function() {
     // form inputs return strings, so check user entered only positive numbers
     function checkNum() {
         for (let i = arguments.length - 1; i >= 0; i--) {
-            //  reject negative numbers: || arguments[i] < 0
             if (isNaN(arguments[i]) || arguments[i] < 0) {
                 return false;
             }
@@ -91,8 +90,8 @@ Theorem.Lib = (function() {
 
     // PERIMETER
 
-    function findPerimeter(args) {
-        if (checkNum(args)) {
+    function findPerimeter() {
+        if (checkNum(...arguments)) {
             let perimeter = 0;
             for (let i = arguments.length - 1; i >= 0; i--) {
                 perimeter += Number(arguments[i]);
